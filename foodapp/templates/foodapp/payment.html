@@ -1,0 +1,37 @@
+{% extends 'foodapp/base.html' %}
+
+{% block content %}
+
+<div class="container text-center mt-5">
+
+    <h2 class="mb-3">💳 Scan & Pay</h2>
+
+    <p><strong>Order ID:</strong> {{ order.id }}</p>
+
+    <p><strong>Amount:</strong> ₹{{ total_amount }}</p>
+
+    <div class="my-4">
+        <img src="{{ qr_path }}"
+             width="250"
+             class="border p-2 shadow">
+    </div>
+
+    <p class="text-muted">
+        Scan this QR using any UPI app
+        (GPay / PhonePe / Paytm)
+    </p>
+
+    <form method="POST"
+          action="{% url 'payment_success' order.id %}">
+
+        {% csrf_token %}
+
+        <button class="btn btn-success btn-lg mt-3">
+            I Have Paid
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

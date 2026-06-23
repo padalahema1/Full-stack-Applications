@@ -1,0 +1,32 @@
+{% extends 'foodapp/base.html' %}
+
+{% block content %}
+
+<div class="text-center mt-5">
+
+    <h1 class="text-success">
+        🎉 Payment Successful
+    </h1>
+
+    <p>
+        Thank you!
+        Your payment has been completed.
+    </p>
+
+    <p>
+        Order ID: {{ order.id }}
+    </p>
+
+    <p>
+        Status:
+        <strong>{{ order.status }}</strong>
+    </p>
+
+    <a href="{% url 'orders' %}"
+       class="btn btn-primary mt-3">
+        View Orders
+    </a>
+
+</div>
+
+{% endblock %}

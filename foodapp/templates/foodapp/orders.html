@@ -1,0 +1,35 @@
+{% extends 'foodapp/base.html' %}
+{% block content %}
+
+<h2>Your Orders</h2>
+
+{% if orders %}
+
+    {% for o in orders %}
+    <div class="card p-3 mb-3 shadow">
+
+        <h5>{{ o.item.name }}</h5>
+
+        <p>Quantity: {{ o.quantity }}</p>
+
+        <p>Total: ₹{{ o.total_price }}</p>
+
+        <p>Status: {{ o.status }}</p>
+
+        <a href="{% url 'payment' o.id %}" class="btn btn-success">
+            Pay Now
+        </a>
+
+    </div>
+    {% endfor %}
+
+{% else %}
+
+    <div class="alert alert-info">
+        No orders found.
+    </div>
+
+{% endif %}
+
+{% endblock %}
+

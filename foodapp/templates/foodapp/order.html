@@ -1,0 +1,53 @@
+{% extends 'foodapp/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card order-card p-4 shadow-lg">
+
+        <h2 class="text-center mb-4">
+            🛒 Order {{ item.name }}
+        </h2>
+
+        <div class="text-center">
+            <img src="{{ item.image.url }}"
+                 class="img-fluid order-image mb-4"
+                 alt="{{ item.name }}">
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">
+                    Quantity
+                </label>
+
+                <input type="number"
+                       id="qty"
+                       name="quantity"
+                       min="1"
+                       value="1"
+                       class="form-control quantity-input"
+                       onkeyup="calculateTotal({{ item.price }})"
+                       onchange="calculateTotal({{ item.price }})">
+            </div>
+
+            <h4 id="total" class="total-text">
+                Total: ₹{{ item.price }}
+            </h4>
+
+            <div class="text-center">
+                <button class="btn place-order-btn mt-3">
+                    ✅ Place Order
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
