@@ -1,50 +1,107 @@
-{% extends 'foodapp/base.html' %}
+{% extends "foodapp/base.html" %}
 
 {% block content %}
 
-<div class="container mt-5">
+<div class="order-page">
 
-    <div class="card order-card p-4 shadow-lg">
+    <div class="order-card">
 
-        <h2 class="text-center mb-4">
-            🛒 Order {{ item.name }}
-        </h2>
+        <!-- Heading -->
 
-        <div class="text-center">
-            <img src="{{ item.image.url }}"
-                 class="img-fluid order-image mb-4"
-                 alt="{{ item.name }}">
+        <div class="order-title">
+
+            <div class="food-circle">
+                🍔
+            </div>
+
+            <div>
+                <h1>Place Your Order</h1>
+
+                <p>
+                    Complete your order details
+                </p>
+            </div>
+
         </div>
 
+
+        <!-- Form -->
+
         <form method="POST">
+
             {% csrf_token %}
 
-            <div class="mb-3">
-                <label class="form-label fw-bold">
-                    Quantity
+
+            <!-- Customer Name -->
+
+            <div class="form-group">
+
+                <label>
+                    👤 Customer Name
                 </label>
 
-                <input type="number"
-                       id="qty"
-                       name="quantity"
-                       min="1"
-                       value="1"
-                       class="form-control quantity-input"
-                       onkeyup="calculateTotal({{ item.price }})"
-                       onchange="calculateTotal({{ item.price }})">
+                <input
+                    type="text"
+                    name="customer_name"
+                    placeholder="Enter your name"
+                    required
+                >
+
             </div>
 
-            <h4 id="total" class="total-text">
-                Total: ₹{{ item.price }}
-            </h4>
 
-            <div class="text-center">
-                <button class="btn place-order-btn mt-3">
-                    ✅ Place Order
-                </button>
+            <!-- Quantity -->
+
+            <div class="form-group">
+
+                <label>
+                    🔢 Quantity
+                </label>
+
+                <input
+                    type="number"
+                    name="quantity"
+                    value="1"
+                    min="1"
+                    required
+                >
+
             </div>
+
+
+            <!-- Total -->
+
+            <div class="total-card">
+
+                <span>
+                    💰 Total Amount
+                </span>
+
+                <strong>
+                    ₹{{ total|floatformat:2 }}
+                </strong>
+
+            </div>
+
+
+            <!-- Payment -->
+
+            <button
+                type="submit"
+                class="payment-btn">
+
+                💳 Continue to Payment
+
+            </button>
 
         </form>
+
+
+        <!-- Back -->
+
+        <a href="/" class="back-home">
+            ← Back to Home
+        </a>
 
     </div>
 

@@ -1,37 +1,143 @@
-{% extends 'foodapp/base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
 
-{% block content %}
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffe0b2, #fff3e0);
+        }
 
-<div class="container text-center mt-5">
+        .payment-container {
+            width: 650px;
+            margin: 50px auto;
+            padding: 35px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            text-align: center;
+        }
 
-    <h2 class="mb-3">💳 Scan & Pay</h2>
+        h1 {
+            color: #ff6f00;
+            margin-bottom: 30px;
+        }
 
-    <p><strong>Order ID:</strong> {{ order.id }}</p>
+        .detail-row {
+            display: flex;
+            align-items: center;
+            background: #fff3e8;
+            margin: 12px 0;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 18px;
+            text-align: left;
+        }
 
-    <p><strong>Amount:</strong> ₹{{ total_amount }}</p>
+        .detail-row strong {
+            width: 180px;
+            color: #e65100;
+        }
 
-    <div class="my-4">
-        <img src="{{ qr_path }}"
-             width="250"
-             class="border p-2 shadow">
+        .qr-box {
+            margin: 30px auto;
+            width: 280px;
+            padding: 20px;
+            background: white;
+            border: 3px solid #ff8c00;
+            border-radius: 15px;
+        }
+
+        .qr-box h3 {
+            color: #e65100;
+            margin-top: 0;
+        }
+
+        .qr-box img {
+            width: 250px;
+            height: 250px;
+            object-fit: contain;
+            display: block;
+            margin: auto;
+        }
+
+        .paid-btn {
+            width: 280px;
+            padding: 15px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(90deg, #ff9800, #f4511e);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .paid-btn:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="payment-container">
+
+    <h1>💳 Complete Payment</h1>
+
+    <div class="detail-row">
+        <strong>📋 Order ID:</strong>
+        <span>#{{ order.id }}</span>
     </div>
 
-    <p class="text-muted">
-        Scan this QR using any UPI app
-        (GPay / PhonePe / Paytm)
-    </p>
+    <div class="detail-row">
+        <strong>👤 Customer:</strong>
+        <span>{{ order.customer_name }}</span>
+    </div>
 
-    <form method="POST"
-          action="{% url 'payment_success' order.id %}">
+    <div class="detail-row">
+        <strong>🍽️ Item:</strong>
+        <span>{{ order.item.name }}</span>
+    </div>
+
+    <div class="detail-row">
+        <strong>🛒 Quantity:</strong>
+        <span>{{ order.quantity }}</span>
+    </div>
+
+    <div class="detail-row">
+        <strong>₹ Amount:</strong>
+        <span>₹{{ order.total_price }}</span>
+    </div>
+
+
+    <!-- QR CODE -->
+
+    <div class="qr-box">
+
+        <h3>📱 Scan to Pay</h3>
+
+        <img src="/media/qr/order_{{ order.id }}.png"
+             alt="Payment QR Code">
+
+    </div>
+
+
+    <!-- PAID BUTTON -->
+
+    <form method="POST" action="{% url 'payment_success' order.id %}">
 
         {% csrf_token %}
 
-        <button class="btn btn-success btn-lg mt-3">
-            I Have Paid
+        <button type="submit" class="paid-btn">
+            ✅ I Have Paid
         </button>
 
     </form>
 
 </div>
 
-{% endblock %}
+</body>
+</html>

@@ -1,9 +1,380 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
-    <title>Home</title>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Food Delivery</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/restaurants.css' %}"
+    >
+
 </head>
+
 <body>
-    <h1>Welcome to FoodApp</h1>
+
+<nav class="navbar">
+
+    <div class="nav-container">
+
+        <a
+            href="{% url 'home' %}"
+            class="logo"
+        >
+            🍲 Food<span class="logo-color">Delivery</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a
+                href="{% url 'home' %}"
+                class="active"
+            >
+                Home
+            </a>
+
+            <a href="#restaurants">
+                Restaurants
+            </a>
+
+            <a href="{% url 'order_list' %}">
+                🛍️ Orders
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-text">
+
+            <p class="small-title">
+                🍴 Delicious food is waiting for you
+            </p>
+
+            <h1>
+                Order Your Favorite
+                <span>Food</span>
+            </h1>
+
+            <p class="hero-description">
+                Discover the best restaurants around you
+                and enjoy delicious meals delivered to your door.
+            </p>
+
+            <div class="search-box">
+
+                <span>🔍</span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search restaurants..."
+                    onkeyup="searchRestaurants()"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-image">
+
+            <div class="food-circle">
+                🍕
+            </div>
+
+            <div class="floating-food food-one">
+                🍔
+            </div>
+
+            <div class="floating-food food-two">
+                🍟
+            </div>
+
+            <div class="floating-food food-three">
+                🍜
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="restaurants-section"
+    id="restaurants"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <p class="section-small-title">
+                TOP RESTAURANTS
+            </p>
+
+            <h2>
+                Choose Your Restaurant
+            </h2>
+
+            <p>
+                Explore delicious food from your favorite restaurants.
+            </p>
+
+        </div>
+
+        <div class="restaurant-count">
+
+            {{ restaurants|length }} Restaurants
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="restaurant-grid"
+        id="restaurantGrid"
+    >
+
+        {% for restaurant in restaurants %}
+
+        <div
+            class="restaurant-card"
+            data-name="{{ restaurant.name|lower }}"
+        >
+
+            <div class="restaurant-image">
+
+                {% if restaurant.image %}
+
+                    <img
+                        src="{{ restaurant.image.url }}"
+                        alt="{{ restaurant.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="default-food-image">
+                        🍽️
+                    </div>
+
+                {% endif %}
+
+                <span class="open-badge">
+                    ● OPEN
+                </span>
+
+                <span class="heart">
+                    ♡
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-content">
+
+                <h3>
+                    {{ restaurant.name }}
+                </h3>
+
+                <p class="location">
+                    📍 {{ restaurant.location }}
+                </p>
+
+                <div class="restaurant-info">
+
+                    <span class="rating">
+                        ⭐ 4.5
+                    </span>
+
+                    <span>
+                        🕒 25-35 min
+                    </span>
+
+                    <span>
+                        ₹₹
+                    </span>
+
+                </div>
+
+                <p class="restaurant-description">
+
+                    Delicious food and quality service.
+                    Order your favorite meal today.
+
+                </p>
+
+                <a
+                    href="{% url 'menu' restaurant.id %}"
+                    class="menu-button"
+                >
+
+                    <span>
+                        View Menu
+                    </span>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="no-restaurants">
+
+            <div>
+                🍽️
+            </div>
+
+            <h3>
+                No Restaurants Found
+            </h3>
+
+            <p>
+                Please add restaurants from Django Admin.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>
+                🍲 FoodDelivery
+            </h3>
+
+            <p>
+                Delicious food delivered to your doorstep.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h4>
+                Quick Links
+            </h4>
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="#restaurants">
+                Restaurants
+            </a>
+
+            <a href="{% url 'order_list' %}">
+                Orders
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h4>
+                Contact
+            </h4>
+
+            <p>
+                📧 support@fooddelivery.com
+            </p>
+
+            <p>
+                📞 +91 98765 43210
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 FoodDelivery.
+        All Rights Reserved.
+
+    </div>
+
+</footer>
+
+
+<script>
+
+function searchRestaurants() {
+
+    let input =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+    let cards =
+        document.querySelectorAll(
+            ".restaurant-card"
+        );
+
+    cards.forEach(function(card) {
+
+        let name =
+            card
+            .getAttribute("data-name")
+            .toLowerCase();
+
+        if (name.includes(input)) {
+
+            card.style.display = "";
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
+
 </body>
+
 </html>
